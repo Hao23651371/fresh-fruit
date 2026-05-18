@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin Tức - Fruit Store</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../js/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
+    <script src="../js/jquery-3.7.1.js"></script>
+    <script src="../js/bootstrap.js"></script>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<section class="page-hero">
+    <div class="container">
+        <h2><i class="fa-solid fa-newspaper me-2 text-success"></i>Tin tức & Mẹo hay</h2>
+    </div>
+</section>
+
+<div class="container my-4">
+
+    <!-- Filter Tabs -->
+    <div class="d-flex gap-2 flex-wrap mb-4">
+        <button class="btn btn-success btn-sm px-3 filter-btn active" data-cat="all">
+            <i class="fa-solid fa-border-all me-1"></i> Tất cả
+        </button>
+        <button class="btn btn-outline-success btn-sm px-3 filter-btn" data-cat="health">
+            <i class="fa-solid fa-heart-pulse me-1"></i> Sức khoẻ
+        </button>
+        <button class="btn btn-outline-success btn-sm px-3 filter-btn" data-cat="tips">
+            <i class="fa-solid fa-lightbulb me-1"></i> Mẹo hay
+        </button>
+        <button class="btn btn-outline-success btn-sm px-3 filter-btn" data-cat="promotion">
+            <i class="fa-solid fa-tags me-1"></i> Khuyến mãi
+        </button>
+    </div>
+
+    <div class="row g-4" id="news-list"></div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="../js/layout.js"></script>
+<script>
+    var newsArticles = [
+        { title: "Lợi ích tuyệt vời của chuối đối với sức khỏe", description: "Chuối không chỉ ngon mà còn giàu kali, vitamin C và chất xơ, tốt cho tim mạch và tiêu hóa.", image: "../images/chuoitin.jpg", category: "health", date: "10/04/2025", link: "#" },
+        { title: "Ưu đãi đặc biệt cho khách hàng thành viên", description: "Giảm 15% mọi đơn hàng khi đăng ký thành viên tại Fruit Store. Đừng bỏ lỡ!", image: "../images/sale15.jpg", category: "promotion", date: "10/04/2025", link: "khuyenmai.html" },
+        { title: "Mẹo chọn dâu tây tươi ngon", description: "Chọn dâu tây đỏ mọng, cuống xanh tươi và mùi thơm nhẹ để có những trái ngon nhất.", image: "../images/dautin.jpg", category: "tips", date: "08/04/2025", link: "chondautay.html" },
+        { title: "Siêu khuyến mãi tháng 4", description: "Giảm giá sâu, mua trái cây tươi với giá chỉ từ 18.000đ/kg. Số lượng có hạn!", image: "../images/khuyenmaitt.png", category: "promotion", date: "05/04/2025", link: "khuyenmai.html" },
+        { title: "Làm sinh tố xoài ngon chuẩn vị mùa hè", description: "Xoài chín hòa quyện cùng sữa tươi tạo nên thức uống mát lạnh, bổ dưỡng mùa hè.", image: "../images/stxoaitt.jpg", category: "tips", date: "07/04/2025", link: "#" },
+        { title: "Cách bảo quản ổi để giữ độ tươi lâu hơn", description: "Mẹo đơn giản giúp ổi tươi ngon lâu hơn mà không bị mất vị ngọt tự nhiên.", image: "../images/oitt.jpg", category: "tips", date: "01/04/2025", link: "#" },
+        { title: "Cam - nguồn vitamin C dồi dào nhất", description: "Một quả cam mỗi ngày cung cấp đủ vitamin C, giúp tăng cường miễn dịch và làm đẹp da.", image: "../images/camtt.jpg", category: "health", date: "09/04/2025", link: "#" },
+        { title: "Khuyến mãi lớn nhân dịp 30/4", description: "Mua 1 tặng 1 cho tất cả trái cây trong ngày 30/4. Cơ hội vàng không thể bỏ qua!", image: "../images/sale304.jpg", category: "promotion", date: "11/04/2025", link: "khuyenmai.html" },
+        { title: "Táo - bí quyết giữ dáng đẹp da mịn", description: "Ăn táo hàng ngày giúp duy trì vóc dáng và làn da khoẻ mạnh nhờ pectin và chất chống oxy hóa.", image: "../images/taott.jpg", category: "health", date: "03/04/2025", link: "#" },
+        { title: "Tác dụng kỳ diệu của nho với tim mạch", description: "Nho chứa resveratrol - chất chống oxy hóa mạnh giúp bảo vệ tim và ngăn ngừa lão hoá.", image: "../images/nhott.jpg", category: "health", date: "04/04/2025", link: "#" },
+        { title: "Cách giữ dưa hấu tươi lâu hơn sau khi cắt", description: "Bí quyết bảo quản dưa hấu đã cắt để giữ nguyên độ ngọt và tươi như mới trong tủ lạnh.", image: "../images/duahautt.jpg", category: "tips", date: "06/04/2025", link: "#" },
+        { title: "Mít - nguồn năng lượng tự nhiên tuyệt vời", description: "Mít cung cấp carbohydrate phức hợp, vitamin B và kali - năng lượng bền vững cho cả ngày.", image: "../images/mittt.jpg", category: "health", date: "02/04/2025", link: "#" }
+    ];
+
+    var catLabels = { health: 'Sức khoẻ', tips: 'Mẹo hay', promotion: 'Khuyến mãi' };
+    var catColors = { health: 'success', tips: 'warning', promotion: 'danger' };
+
+    function displayArticles(cat) {
+        var list = document.getElementById('news-list');
+        list.innerHTML = '';
+        var filtered = cat === 'all' ? newsArticles : newsArticles.filter(function(a) { return a.category === cat; });
+        if (filtered.length === 0) {
+            list.innerHTML = '<div class="col-12 text-center text-muted py-5">Không có bài viết nào.</div>';
+            return;
+        }
+        filtered.forEach(function(article) {
+            var color = catColors[article.category] || 'secondary';
+            var label = catLabels[article.category] || article.category;
+            var row = document.createElement('div');
+            row.className = 'col-md-6 col-lg-4';
+            row.innerHTML = '<div class="news-card">' +
+                '<div class="news-img-wrap"><img src="' + article.image + '" alt="' + article.title + '" onerror="this.src=\'../images/cam.png\'"></div>' +
+                '<div class="news-body">' +
+                '<div class="d-flex align-items-center gap-2 mb-2">' +
+                '<span class="badge bg-' + color + '">' + label + '</span>' +
+                '<small class="text-muted"><i class="fa-regular fa-calendar me-1"></i>' + article.date + '</small>' +
+                '</div>' +
+                '<h5 class="news-title">' + article.title + '</h5>' +
+                '<p class="news-desc">' + article.description + '</p>' +
+                '<a href="' + article.link + '" class="btn btn-outline-success btn-sm">Đọc thêm <i class="fa-solid fa-arrow-right ms-1"></i></a>' +
+                '</div></div>';
+            list.appendChild(row);
+        });
+    }
+
+    displayArticles('all');
+
+    document.querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(function(b) {
+                b.classList.remove('active', 'btn-success');
+                b.classList.add('btn-outline-success');
+            });
+            this.classList.add('active', 'btn-success');
+            this.classList.remove('btn-outline-success');
+            displayArticles(this.dataset.cat);
+        });
+    });
+</script>
+</body>
+</html>

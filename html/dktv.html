@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký Thành Viên - Fruit Store</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../js/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
+    <script src="../js/jquery-3.7.1.js"></script>
+    <script src="../js/bootstrap.js"></script>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<section class="page-hero">
+    <div class="container">
+        <h2><i class="fa-solid fa-user-plus me-2 text-success"></i>Đăng ký thành viên</h2>
+    </div>
+</section>
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="form-card">
+                <h2><i class="fa-solid fa-id-card me-2"></i>Tạo tài khoản mới</h2>
+
+                <form id="registerForm">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fa-solid fa-user-pen me-1 text-success"></i> Họ và tên
+                        </label>
+                        <input type="text" id="name" class="form-control" placeholder="Ví dụ: Nguyen Van A">
+                        <div class="error mt-1" id="errName"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fa-regular fa-envelope me-1 text-success"></i> Email
+                        </label>
+                        <input type="email" id="email" class="form-control" placeholder="example@email.com">
+                        <div class="error mt-1" id="errEmail"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fa-solid fa-phone me-1 text-success"></i> Số điện thoại
+                        </label>
+                        <input type="text" id="phone" class="form-control" placeholder="09x, 03x, 07x, 08x, 05x...">
+                        <div class="error mt-1" id="errPhone"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fa-solid fa-lock me-1 text-success"></i> Mật khẩu
+                        </label>
+                        <div class="input-group">
+                            <input type="password" id="password" class="form-control" placeholder="Tối thiểu 6 ký tự, gồm chữ và số">
+                            <button type="button" class="btn btn-outline-secondary" id="togglePass1">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="error mt-1" id="errPass"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="fa-solid fa-lock me-1 text-success"></i> Nhập lại mật khẩu
+                        </label>
+                        <div class="input-group">
+                            <input type="password" id="confirm" class="form-control" placeholder="Nhập lại mật khẩu">
+                            <button type="button" class="btn btn-outline-secondary" id="togglePass2">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="error mt-1" id="errConfirm"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+                        <i class="fa-solid fa-user-plus me-1"></i> Đăng ký ngay
+                    </button>
+
+                    <p class="text-center mt-3 mb-0" style="font-size:0.9rem;">
+                        Đã có tài khoản?
+                        <a href="#" class="text-success fw-semibold" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="../js/layout.js"></script>
+<script>
+    // Toggle password visibility
+    document.getElementById('togglePass1').addEventListener('click', function() {
+        const p = document.getElementById('password');
+        const i = this.querySelector('i');
+        p.type = p.type === 'password' ? 'text' : 'password';
+        i.className = p.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    });
+    document.getElementById('togglePass2').addEventListener('click', function() {
+        const p = document.getElementById('confirm');
+        const i = this.querySelector('i');
+        p.type = p.type === 'password' ? 'text' : 'password';
+        i.className = p.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let valid = true;
+        const name    = document.getElementById('name').value.trim();
+        const email   = document.getElementById('email').value.trim();
+        const phone   = document.getElementById('phone').value.trim();
+        const pass    = document.getElementById('password').value;
+        const confirm = document.getElementById('confirm').value;
+
+        document.querySelectorAll('.error').forEach(el => el.innerText = '');
+
+        if (!/^([A-Z][a-zÀ-ỹ]*)(\s[A-Z][a-zÀ-ỹ]*)+$/.test(name)) {
+            document.getElementById('errName').innerText = 'Mỗi từ phải viết hoa chữ cái đầu. Ví dụ: Nguyen Van A';
+            valid = false;
+        }
+        if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+            document.getElementById('errEmail').innerText = 'Email không hợp lệ';
+            valid = false;
+        }
+        if (!/^(09|03|07|06|05|04)\d{8}$/.test(phone)) {
+            document.getElementById('errPhone').innerText = 'Số điện thoại không hợp lệ (phải bắt đầu 09/03/07/06/05/04 và đủ 10 số)';
+            valid = false;
+        }
+        if (!/(?=.*[A-Za-z])(?=.*\d).{6,}/.test(pass)) {
+            document.getElementById('errPass').innerText = 'Mật khẩu phải có ít nhất 6 ký tự, gồm chữ và số';
+            valid = false;
+        }
+        if (confirm !== pass) {
+            document.getElementById('errConfirm').innerText = 'Mật khẩu nhập lại không khớp';
+            valid = false;
+        }
+
+        if (valid) {
+            localStorage.setItem('name', name);
+            localStorage.setItem('email', email);
+            localStorage.setItem('phone', phone);
+            localStorage.setItem('password', pass);
+            alert('Đăng ký thành công! Mời bạn đăng nhập.');
+            window.location.href = 'bai5ghep.html';
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - Fruit Store</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../js/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
+    <script src="../js/jquery-3.7.1.js"></script>
+    <script src="../js/bootstrap.js"></script>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<section class="page-hero">
+    <div class="container">
+        <h2><i class="fa-solid fa-credit-card me-2 text-success"></i>Thông tin thanh toán</h2>
+    </div>
+</section>
+
+<div class="container my-4">
+    <div class="row g-4">
+        <!-- Checkout Form -->
+        <div class="col-lg-7">
+            <div class="form-card">
+                <h2><i class="fa-solid fa-user me-2"></i>Thông tin khách hàng</h2>
+
+                <form id="infoForm" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">
+                            <i class="fa-solid fa-user-pen me-1 text-success"></i> Họ và tên
+                        </label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Ví dụ: Nguyen Van A"
+                            required pattern="^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$">
+                        <div class="invalid-feedback">
+                            Họ tên phải viết hoa chữ cái đầu mỗi từ, không có dấu. Ví dụ: Tran Hao
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">
+                            <i class="fa-solid fa-phone me-1 text-success"></i> Số điện thoại
+                        </label>
+                        <input type="tel" class="form-control" id="phone" placeholder="09x, 03x, 07x, 08x, 05x..."
+                            required pattern="^(09|03|07|08|05)\d{8}$">
+                        <div class="invalid-feedback">
+                            Số điện thoại phải bắt đầu bằng 09, 03, 07, 08 hoặc 05 và đủ 10 chữ số.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fa-regular fa-envelope me-1 text-success"></i> Email
+                        </label>
+                        <input type="email" class="form-control" id="email" placeholder="example@gmail.com"
+                            required pattern="^[a-zA-Z0-9._%+\-]+@gmail\.com$">
+                        <div class="invalid-feedback">
+                            Email phải đúng định dạng và kết thúc bằng @gmail.com
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">
+                            <i class="fa-solid fa-location-dot me-1 text-success"></i> Địa chỉ giao hàng
+                        </label>
+                        <input type="text" class="form-control" id="address" placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."
+                            required minlength="11">
+                        <div class="invalid-feedback">
+                            Địa chỉ phải có ít nhất 10 ký tự.
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="note" class="form-label">
+                            <i class="fa-solid fa-note-sticky me-1 text-success"></i> Ghi chú (tùy chọn)
+                        </label>
+                        <textarea class="form-control" id="note" rows="3" placeholder="Ghi chú cho đơn hàng, yêu cầu giao hàng..."></textarea>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-outline-secondary px-4" id="validateBtn">
+                            <i class="fa-solid fa-check-circle me-1"></i> Kiểm tra
+                        </button>
+                        <button type="button" class="btn btn-success px-4" id="submitBtn" disabled>
+                            <i class="fa-solid fa-paper-plane me-1"></i> Xác nhận đơn hàng
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-5">
+            <div class="order-summary-card">
+                <h5><i class="fa-solid fa-basket-shopping me-2 text-success"></i>Đơn hàng của bạn</h5>
+                <div id="cartSummary">
+                    <p class="text-muted text-center py-2">Đang tải...</p>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold fs-5">Tổng tiền:</span>
+                    <span class="order-total" id="summaryTotal">0 đ</span>
+                </div>
+            </div>
+
+            <div class="mt-3 p-3 bg-white rounded" style="border:1px solid #d1e7dd; font-size:0.88rem;">
+                <p class="mb-1 fw-semibold text-success"><i class="fa-solid fa-shield-halved me-1"></i>Cam kết của chúng tôi:</p>
+                <ul class="mb-0 ps-3 text-muted">
+                    <li>Trái cây tươi ngon, đảm bảo chất lượng</li>
+                    <li>Giao hàng nhanh trong ngày</li>
+                    <li>Đổi trả miễn phí nếu không đạt chuẩn</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="../js/layout.js"></script>
+<script>
+    // Load cart summary
+    (function() {
+        const cart = JSON.parse(localStorage.getItem('checkoutCart') || localStorage.getItem('cart') || '[]');
+        const summaryEl = document.getElementById('cartSummary');
+        const totalEl = document.getElementById('summaryTotal');
+        let total = 0;
+
+        if (cart.length === 0) {
+            summaryEl.innerHTML = '<p class="text-muted text-center">Giỏ hàng trống</p>';
+        } else {
+            let html = '';
+            cart.forEach(item => {
+                const price = parseInt(item.price.replace(/\D/g, ''));
+                const rowTotal = price * item.quantity;
+                total += rowTotal;
+                html += `<div class="d-flex justify-content-between mb-2" style="font-size:0.9rem;">
+                    <span>${item.name} × ${item.quantity}</span>
+                    <span class="fw-medium">${rowTotal.toLocaleString('vi-VN')} đ</span>
+                </div>`;
+            });
+            summaryEl.innerHTML = html;
+        }
+        if (totalEl) totalEl.textContent = total.toLocaleString('vi-VN') + ' đ';
+    })();
+
+    // Form validation
+    const form = document.getElementById('infoForm');
+    const validateBtn = document.getElementById('validateBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    validateBtn.addEventListener('click', () => {
+        form.classList.add('was-validated');
+        submitBtn.disabled = !form.checkValidity();
+    });
+
+    submitBtn.addEventListener('click', () => {
+        localStorage.setItem('userName', document.getElementById('fullName').value);
+        localStorage.setItem('userPhone', document.getElementById('phone').value);
+        localStorage.setItem('userEmail', document.getElementById('email').value);
+        localStorage.setItem('userAddress', document.getElementById('address').value);
+        localStorage.setItem('userNote', document.getElementById('note').value);
+        window.location.href = 'xacnhan.html';
+    });
+
+    // Validate on input change
+    form.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => {
+            if (form.classList.contains('was-validated')) {
+                submitBtn.disabled = !form.checkValidity();
+            }
+        });
+    });
+</script>
+</body>
+</html>

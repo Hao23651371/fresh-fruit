@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\MSI GF63\\\\Documents\\\\web dự án trái cây\\\\Nhom9_WebBanTraiCay\\\\Nhom9_WebBanTraiCay\\\\Nhom9_WebBanTraiCay\" -Recurse)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(ConvertTo-Json)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git checkout *)"
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết Quả Tìm Kiếm - Fruit Store</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../js/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
+    <script src="../js/jquery-3.7.1.js"></script>
+    <script src="../js/bootstrap.js"></script>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<section class="page-hero">
+    <div class="container">
+        <h2><i class="fa-solid fa-magnifying-glass me-2 text-success"></i>Kết quả tìm kiếm</h2>
+    </div>
+</section>
+
+<div class="container my-4">
+    <div id="search-info" class="mb-3 text-muted"></div>
+    <div class="row g-4" id="search-results"></div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="../js/layout.js"></script>
+<script>
+    function removeDiacritics(str) {
+        return str.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    }
+
+    var fruits = [
+        { name: "Chuối Xiêm",       price: "30.000 đ", image: "../images/chuối.png",       link: "bai10.html" },
+        { name: "Ổi Nữ Hoàng",      price: "25.000 đ", image: "../images/ôi1.png",         link: "bai12.html" },
+        { name: "Sầu Riêng Ri6",    price: "130.000 đ", image: "../images/sầu riêng.png",  link: "saurieng.html" },
+        { name: "Chôm Chôm",        price: "22.000 đ", image: "../images/chomchom.png",     link: "chomchom.html" },
+        { name: "Dâu Tây Đà Lạt",   price: "80.000 đ", image: "../images/dautay.png",      link: "dau.html" },
+        { name: "Dừa Xiêm Xanh",    price: "10.000 đ", image: "../images/dua.png",         link: "dua.html" },
+        { name: "Đu Đủ Ruột Đỏ",    price: "15.000 đ", image: "../images/dudu.png",        link: "dudu.html" },
+        { name: "Khế Ngọt",         price: "12.000 đ", image: "../images/khe.png",         link: "khe.html" },
+        { name: "Cam Sành",         price: "10.000 đ", image: "../images/cam.png",         link: "cam.html" },
+        { name: "Mít Tố Nữ",        price: "20.000 đ", image: "../images/mit.png",         link: "mit.html" },
+        { name: "Lựu Đỏ",           price: "30.000 đ", image: "../images/luu.png",         link: "luu.html" },
+        { name: "Táo Envy",         price: "25.000 đ", image: "../images/táo.png",         link: "tao.html" },
+        { name: "Thanh Long Ruột Đỏ", price: "20.000 đ", image: "../images/thanhlong.png", link: "thanhlong.html" },
+        { name: "Vú Sữa Tím",       price: "15.000 đ", image: "../images/vusua.png",       link: "vusua.html" },
+        { name: "Măng Cụt",         price: "25.000 đ", image: "../images/mangcut.png",     link: "mangcut.html" }
+    ];
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var query = urlParams.get('query') ? urlParams.get('query').trim() : '';
+    var resultsDiv = document.getElementById('search-results');
+    var infoDiv = document.getElementById('search-info');
+
+    if (!query) {
+        infoDiv.innerHTML = '<i class="fa-solid fa-circle-info me-1"></i>Vui lòng nhập từ khóa vào ô tìm kiếm trên thanh điều hướng.';
+        resultsDiv.innerHTML = '';
+    } else {
+        var normalizedQuery = removeDiacritics(query.toLowerCase());
+        var filtered = fruits.filter(function(f) {
+            return removeDiacritics(f.name.toLowerCase()).includes(normalizedQuery);
+        });
+
+        infoDiv.innerHTML = 'Kết quả tìm kiếm cho: <strong>"' + query + '"</strong> — tìm thấy <strong>' + filtered.length + '</strong> sản phẩm';
+
+        if (filtered.length === 0) {
+            resultsDiv.innerHTML = '<div class="col-12 text-center py-5">' +
+                '<i class="fa-solid fa-face-frown text-muted" style="font-size:3rem; opacity:0.3;"></i>' +
+                '<p class="mt-3 text-muted">Không tìm thấy sản phẩm nào phù hợp với "' + query + '".</p>' +
+                '<a href="bai5ghep.html" class="btn btn-success btn-sm px-4"><i class="fa-solid fa-store me-1"></i>Xem tất cả sản phẩm</a>' +
+                '</div>';
+        } else {
+            filtered.forEach(function(fruit) {
+                var card = document.createElement('div');
+                card.className = 'col-6 col-md-4 col-lg-3';
+                card.innerHTML = '<div class="product-card">' +
+                    '<div class="product-img-wrap"><img src="' + fruit.image + '" alt="' + fruit.name + '"></div>' +
+                    '<div class="product-body">' +
+                    '<h5 class="product-name">' + fruit.name + '</h5>' +
+                    '<div class="product-price">' + fruit.price + ' <small>/kg</small></div>' +
+                    '<a href="' + fruit.link + '" class="btn-product"><i class="fa-solid fa-cart-plus me-1"></i>Xem sản phẩm</a>' +
+                    '</div></div>';
+                resultsDiv.appendChild(card);
+            });
+        }
+    }
+</script>
+</body>
+</html>
